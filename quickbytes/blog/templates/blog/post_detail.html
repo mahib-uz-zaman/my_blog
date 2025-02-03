@@ -8,10 +8,10 @@
     <p>By {{ post.author }} on {{ post.created_at }}</p>
     <p>{{ post.likes.filter(is_dislike=False).count }} Likes | {{ post.likes.filter(is_dislike=True).count }} Dislikes</p>
     <a href="{% url 'like_post' post.id %}" class="btn btn-primary">
-        {% if request.user in post.likes.all and not post.likes.get(user=request.user).is_dislike %}Unlike{% else %}Like{% endif %}
+        {% if post.user_has_liked %}Unlike{% else %}Like{% endif %}
     </a>
     <a href="{% url 'dislike_post' post.id %}" class="btn btn-danger">
-        {% if request.user in post.likes.all and post.likes.get(user=request.user).is_dislike %}Undislike{% else %}Dislike{% endif %}
+        {% if post.user_has_disliked %}Undislike{% else %}Dislike{% endif %}
     </a>
     {% if post.author == request.user %}
         <form action="{% url 'delete_post' post.id %}" method="post" class="d-inline">
