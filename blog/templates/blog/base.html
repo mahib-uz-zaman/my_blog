@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QuickBytes Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="{% url 'post_list' %}">QuickBytes</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="{% url 'post_create' %}">New Post</a></li>
+    </ul>
+    <ul class="navbar-nav">
+      {% if user.is_authenticated %}
+      <li class="nav-item"><span class="navbar-text">Hello, {{ user.username }}</span></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+      <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Sign Up</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

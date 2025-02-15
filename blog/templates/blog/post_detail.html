@@ -1,0 +1,40 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<article>
+    <h1>{{ object.title }}</h1>
+    <p>By {{ object.author }} on {{ object.published_date|date:"M d, Y" }}</p>
+    <div>{{ object.content|safe }}</div>
+</article>
+
+<hr>
+
+<section>
+    <h3>Comments</h3>
+    {% for comment in object.comments.all %}
+        <div class="mb-2">
+            <strong>{{ comment.name }}</strong> said:
+            <p>{{ comment.body }}</p>
+            <small>{{ comment.created_on|date:"M d, Y H:i" }}</small>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+</section>
+
+<hr>
+<section>
+    <h3>Add a Comment</h3>
+    <form method="post" action="{% url 'add_comment' slug=object.slug %}">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+    </form>
+</section>
+
+{% if user == object.author %}
+<hr>
+<a href="{% url 'post_update' slug=object.slug %}" class="btn btn-warning">Edit Post</a>
+<a href="{% url 'post_delete' slug=object.slug %}" class="btn btn-danger">Delete Post</a>
+{% endif %}
+{% endblock %}
